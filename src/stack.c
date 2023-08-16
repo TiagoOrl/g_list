@@ -6,6 +6,7 @@ void add(Stack * stack, int id)
     Node * newNode = (Node *)malloc(sizeof(Node));
     newNode->next = NULL;
     newNode->id = id;
+    newNode->i = stack->size;
 
     if (stack->top == NULL)
         stack->top = newNode;
@@ -50,7 +51,7 @@ void print(Stack * stack)
 
     while (it != NULL)
     {
-        printf("%d\n", it->id);
+        printf("(%d)\ti: %d\n", it->id, it->i);
         it = it->next;
     }
 }
