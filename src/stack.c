@@ -43,3 +43,14 @@ Stack * newStack()
 
     return stack;
 }
+
+void print(Stack * stack)
+{
+    Node * it = stack->top;
+
+    while (it != NULL)
+    {
+        printf("%d\n", it->id);
+        it = it->next;
+    }
+}

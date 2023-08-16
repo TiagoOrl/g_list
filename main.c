@@ -12,6 +12,8 @@ int main(int argc, char const *argv[])
     add(stack, 300);
     add(stack, 65);
 
+    print(stack);
+    
     printf("stack size: %d\n", stack->size);
 
     printf("poped %d \n", pop(stack));
@@ -19,12 +21,7 @@ int main(int argc, char const *argv[])
 
     printf("stack size: %d\n", stack->size);
 
-    Node * it = stack->top;
-    while (it != NULL)
-    {
-        printf("val: %d\n", it->id);
-        it = it->next;
-    }
+    print(stack);
     
     return 0;
 }
