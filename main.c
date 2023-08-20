@@ -1,27 +1,25 @@
-#include "src/stack.h"
+#include "src/list.h"
 
 
 int main(int argc, char const *argv[])
 {
-    Stack * stack = newStack();
+    List * list = newList();
 
-    add(stack, 10);
-    add(stack, 12);
-    add(stack, 17);
-    add(stack, 20);
-    add(stack, 300);
-    add(stack, 65);
+    push(list, 10);
 
-    print(stack);
-    
-    printf("stack size: %d\n", stack->size);
+    push(list, 12);
+    push(list, 17);
+    push(list, 20);
+    push(list, 300);
+    push(list, 420);
+    push(list, 426);
 
-    printf("poped %d \n", pop(stack));
-    printf("poped %d \n", pop(stack));
+    print(list);
 
-    printf("stack size: %d\n", stack->size);
+    printf("poped %d \n", pop(list));
+    printf("poped %d \n", pop(list));
 
-    print(stack);
+    print(list);
     
     return 0;
 }

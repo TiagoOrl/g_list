@@ -1,14 +1,15 @@
 CC=gcc
+DEBUG=-g
 
 
-run: main.o stack.o
-	$(CC) -o run main.o stack.o && rm *.o && clear && ./run
+run: main.o list.o
+	$(CC) -o run main.o list.o $(DEBUG) && rm *.o && clear && ./run
 
 main.o: main.c
-	$(CC) -c main.c
+	$(CC) -c main.c $(DEBUG)
 
-stack.o: src/stack.c
-	$(CC) -c src/stack.c
+list.o: src/list.c
+	$(CC) -c src/list.c $(DEBUG)
 
-rm:
+cl:
 	rm *.o run
