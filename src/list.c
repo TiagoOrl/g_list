@@ -217,6 +217,37 @@ void removeAt(List * list, int i)
     removeNode(list, found);
 }
 
+void enqueue(List * list, int id)
+{
+    if (list == NULL)
+        return;
+    
+    Node * newNode = createNode();
+    newNode->i = 0;
+    newNode->id = id;
+
+    if (list->bottom == NULL || list->size < 1)
+    {
+        list->bottom = newNode;
+        list->top = newNode;
+    }
+    else 
+    {
+        list->bottom->next = newNode;
+        newNode->prev = list->bottom;
+        list->bottom = newNode;
+    }
+
+    Node * it = list->bottom->prev;
+
+    while (it != NULL)
+    {
+        it->i++;
+        it = it->prev;
+    }
+    list->size++;
+}
+
 int dequeue(List * list)
 {
     if (
