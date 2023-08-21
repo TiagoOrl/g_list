@@ -6,7 +6,6 @@ int main(int argc, char const *argv[])
     List * list = newList();
 
     push(list, 10);
-
     push(list, 12);
     push(list, 17);
     push(list, 20);
@@ -16,8 +15,16 @@ int main(int argc, char const *argv[])
 
     print(list);
 
-    printf("poped %d \n", pop(list));
-    printf("poped %d \n", pop(list));
+    removeAt(list, list->size - 1);
+    removeAt(list, list->size - 1);
+    removeAt(list, list->size - 1);
+    removeAt(list, list->size - 1);
+    removeAt(list, list->size - 1);
+    removeAt(list, list->size - 1);
+    removeAt(list, list->size - 1);
+
+    // push(list, 27);
+    // push(list, 29);
 
     print(list);
     

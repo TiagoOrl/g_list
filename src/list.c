@@ -53,6 +53,106 @@ int pop(List * list)
     return id;
 }
 
+Node * getAt(List * list, int i)
+{    
+    Node * found = NULL;
+    Node * it = NULL;
+
+    if (i < 0 || list == NULL)
+        return NULL;
+
+    it = list->top;
+
+    while (it != NULL)
+    {
+        if (it->i == i)
+            return it;
+        it = it->next;
+    }
+
+    return found;
+}
+
+void removeAt(List * list, int i)
+{
+
+    if (
+        list->size < 1 || 
+        list->top == NULL || 
+        i >= list->size ||
+        i < 0
+    )
+        return;
+
+
+
+    Node * found = NULL;
+
+    if (i == 0)
+        found = list->bottom;
+    else if (i == list->size - 1)
+        found = list->top;
+    else
+        found = getAt(list, i);
+
+    if (found == NULL)
+        return;
+
+    if (found->prev == NULL && found->next == NULL)
+    {
+        pop(list);
+        return;
+    }
+
+    // top node
+    if (found->prev == NULL)
+    {
+        Node * nextSubs = found->next;
+        nextSubs->prev = NULL;
+        list->top = nextSubs;
+        list->size--;
+
+        free(found);
+        return;
+    }
+
+    // bottom node
+    if (found->next == NULL)
+    {
+        Node * prevSubs = found->prev;
+        Node * it = prevSubs;
+        prevSubs->next = NULL;
+        list->bottom = prevSubs;
+
+        list->size--;
+
+        while(it != NULL)
+        {
+            it->i--;
+            it = it->prev;
+        }
+
+        free(found);
+        return;
+    }
+
+    Node * subs = found->prev;
+    Node * it = subs;
+
+    found->next->prev = subs;
+    subs->next = found->next;
+    list->size--;
+
+    while (it != NULL)
+    {
+        it->i--;
+        it = it->prev;
+    }
+
+    free(found);
+    return;
+}
+
 List * newList()
 {
     List * list = (List *)malloc(sizeof(List));
@@ -72,7 +172,7 @@ void print(List * list)
 
     printf("Printing all items: \n\n");
 
-    while (it != NULL)
+    while (it != NULL && list->size > 0)
     {
         printf("(%d)\ti: %d", it->id, it->i);
         if (it->prev != NULL)
