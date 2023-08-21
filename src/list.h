@@ -11,7 +11,7 @@ struct _list {
 typedef struct _list List;
 
 void push(List * list, int id);
-void insertAt(int i, int id);
+void insertAt(List * l, int i, int id);
 Node * getAt(List * l, int i);
 void removeAt(List * list, int i);
 void removeVal(int id);

@@ -15,13 +15,8 @@ int main(int argc, char const *argv[])
 
     print(list);
 
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
+    insertAt(list, list->size - 1, 8451);
+    insertAt(list, 2, 44);
 
     // push(list, 27);
     // push(list, 29);

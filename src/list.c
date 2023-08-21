@@ -73,6 +73,36 @@ Node * getAt(List * list, int i)
     return found;
 }
 
+void insertAt(List * list, int i, int id)
+{
+    if (
+        list->size < 1 || 
+        list->top == NULL || 
+        i >= list->size ||
+        i < 0
+    )
+        return;
+
+    Node * found = NULL;
+    Node * newNode = createNode();
+
+    newNode->id = id;
+    newNode->i = i;
+
+    if (i == 0)
+        found = list->bottom;
+    else if (i == list->size - 1)
+        found = list->top;
+    else
+        found = getAt(list, i);
+
+    if (found == NULL)
+        return;
+
+    found->id = id;
+    return;
+}
+
 void removeAt(List * list, int i)
 {
 
