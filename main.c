@@ -6,25 +6,18 @@ int main(int argc, char const *argv[])
     List * list = newList();
 
     push(list, 10);
-    push(list, 12);
-    push(list, 17);
     push(list, 20);
-    push(list, 300);
-    push(list, 420);
-    push(list, 426);
+    push(list, 30);
+    push(list, 41);
+    push(list, 56);
+    push(list, 60);
+    push(list, 71);
 
     print(list);
 
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
-    removeAt(list, list->size - 1);
+    dequeue(list);
+    dequeue(list);
 
-    // push(list, 27);
-    // push(list, 29);
 
     print(list);
     

@@ -55,7 +55,6 @@ int pop(List * list)
 
 Node * getAt(List * list, int i)
 {    
-    Node * found = NULL;
     Node * it = NULL;
 
     if (i < 0 || list == NULL)
@@ -70,12 +69,30 @@ Node * getAt(List * list, int i)
         it = it->next;
     }
 
-    return found;
+    return it;
 }
 
-void removeAt(List * list, int i)
+Node * getByVal(List * list, int id)
 {
+    Node * it = NULL;
 
+    if (list == NULL)
+        return;
+
+    it = list->top;
+
+    while (it != NULL)
+    {
+        if (it->id == id)
+            return it;
+        it = it->next;
+    }
+
+    return it;
+}
+
+void insertAt(List * list, int i, int id)
+{
     if (
         list->size < 1 || 
         list->top == NULL || 
@@ -84,9 +101,11 @@ void removeAt(List * list, int i)
     )
         return;
 
-
-
     Node * found = NULL;
+    Node * newNode = createNode();
+
+    newNode->id = id;
+    newNode->i = i;
 
     if (i == 0)
         found = list->bottom;
@@ -95,6 +114,15 @@ void removeAt(List * list, int i)
     else
         found = getAt(list, i);
 
+    if (found == NULL)
+        return;
+
+    found->id = id;
+    return;
+}
+
+void removeNode(List * list, Node * found)
+{
     if (found == NULL)
         return;
 
@@ -151,6 +179,73 @@ void removeAt(List * list, int i)
 
     free(found);
     return;
+}
+
+void removeVal(List * list, int id)
+{
+    if (list->size < 1)
+        return;
+
+    Node * found = NULL;
+
+    found = getByVal(list, id);
+    removeNode(list, found);
+}
+
+void removeAt(List * list, int i)
+{
+
+    if (
+        list->size < 1 || 
+        list->top == NULL || 
+        i >= list->size ||
+        i < 0
+    )
+        return;
+
+
+
+    Node * found = NULL;
+
+    if (i == 0)
+        found = list->bottom;
+    else if (i == list->size - 1)
+        found = list->top;
+    else
+        found = getAt(list, i);
+
+    removeNode(list, found);
+}
+
+int dequeue(List * list)
+{
+    if (
+        list == NULL || 
+        list->bottom == NULL || 
+        list->size < 1
+    )
+        return NULL;
+
+    Node * oldBottom = list->bottom;
+    int val = oldBottom->id;
+    list->bottom = oldBottom->prev;
+
+    if (list->bottom != NULL)
+        list->bottom->next = NULL;
+    else
+        list->top = NULL;
+
+    list->size--;
+
+    Node * it = list->bottom;
+    while (it != NULL)
+    {
+        it->i--;
+        it = it->prev;
+    }
+
+    free(oldBottom);
+    return val;
 }
 
 List * newList()
