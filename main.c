@@ -7,10 +7,17 @@ int main(int argc, char const *argv[])
 
     print(list);
 
-    enqueue(list, 203);
-    enqueue(list, 481);
-    enqueue(list, 66);
-    enqueue(list, 120);
+    push(list, 203);
+    push(list, 50);
+    push(list, 30);
+    push(list, 22);
+    push(list, 4);
+    
+
+    print(list);
+
+    dequeue(list);
+    dequeue(list);
 
     print(list);
     
