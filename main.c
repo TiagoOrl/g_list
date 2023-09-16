@@ -3,23 +3,19 @@
 
 int main(int argc, char const *argv[])
 {
-    List * list = newList();
+    List * list = l_newList();
 
-    push(list, 10);
-    push(list, 20);
-    push(list, 30);
-    push(list, 41);
-    push(list, 56);
-    push(list, 60);
-    push(list, 71);
+    l_push(list, "Alan");
+    l_push(list, "Brock");
+    l_push(list, "Catherine");
+    l_push(list, "Fabian");
+    l_push(list, "Haroldo");
+    l_push(list, "Jake");
+    l_push(list, "Jacob");
 
-    print(list);
+    l_dequeue(list);
 
-    dequeue(list);
-    dequeue(list);
-
-
-    print(list);
+    l_print(list, 'b');
     
     return 0;
 }
