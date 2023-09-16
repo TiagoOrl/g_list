@@ -1,22 +1,23 @@
 #include "list.h"
 
 
-Node * createNode()
+Node * l_createNode(char * data)
 {
     Node * node = (Node *)malloc(sizeof(Node));
     node->next = NULL;
     node->prev = NULL;
-    node->id = NULL;
+    node->data = (char *)malloc(strlen(data) * sizeof(char));
     node->i = -1;
+
+    strcpy(node->data, data);
 
     return node;
 }
 
-void push(List * list, int id)
+void l_push(List * list, char * data)
 {
-    Node * newNode = createNode();
+    Node * newNode = l_createNode(data);
 
-    newNode->id = id;
     newNode->i = list->size;
 
     if (list->top == NULL || list->size == 0)
@@ -33,13 +34,16 @@ void push(List * list, int id)
     list->size++;
 }
 
-int pop(List * list)
+char * l_pop(List * list)
 {
     if (list->top == NULL)
         return NULL;
     
     Node * topNode = list->top;
-    int id = topNode->id;
+    char * val = (char *)malloc(strlen(list->top->data) * sizeof(char));
+    
+    strcpy(val, topNode->data);
+    l_cleanupNode(topNode);
 
     list->top = list->top->next;
     if (list->top == NULL)
@@ -50,10 +54,10 @@ int pop(List * list)
     list->size--;
     free(topNode);
 
-    return id;
+    return val;
 }
 
-Node * getAt(List * list, int i)
+Node * l_getAt(List * list, int i)
 {    
     Node * it = NULL;
 
@@ -72,18 +76,18 @@ Node * getAt(List * list, int i)
     return it;
 }
 
-Node * getByVal(List * list, int id)
+Node * l_getByVal(List * list, char * data)
 {
     Node * it = NULL;
 
     if (list == NULL)
-        return;
+        return NULL;
 
     it = list->top;
 
     while (it != NULL)
     {
-        if (it->id == id)
+        if (strcmp(it->data, data) == 0)
             return it;
         it = it->next;
     }
@@ -91,76 +95,30 @@ Node * getByVal(List * list, int id)
     return it;
 }
 
-void insertAt(List * list, int i, int id)
-{
-    if (
-        list->size < 1 || 
-        list->top == NULL || 
-        i >= list->size ||
-        i < 0
-    )
-        return;
 
-    Node * found = NULL;
-    Node * newNode = createNode();
-
-    newNode->id = id;
-    newNode->i = i;
-
-    if (i == 0)
-        found = list->bottom;
-    else if (i == list->size - 1)
-        found = list->top;
-    else
-        found = getAt(list, i);
-
-    if (found == NULL)
-        return;
-
-    found->id = id;
-    return;
-}
-
-void removeNode(List * list, Node * found)
+void l_removeNode(List * list, Node * found)
 {
     if (found == NULL)
         return;
+
 
     if (found->prev == NULL && found->next == NULL)
     {
-        pop(list);
+        l_pop(list);
         return;
     }
 
     // top node
     if (found->prev == NULL)
     {
-        Node * nextSubs = found->next;
-        nextSubs->prev = NULL;
-        list->top = nextSubs;
-        list->size--;
-
-        free(found);
+        l_pop(list);
         return;
     }
 
     // bottom node
     if (found->next == NULL)
     {
-        Node * prevSubs = found->prev;
-        Node * it = prevSubs;
-        prevSubs->next = NULL;
-        list->bottom = prevSubs;
-
-        list->size--;
-
-        while(it != NULL)
-        {
-            it->i--;
-            it = it->prev;
-        }
-
-        free(found);
+        l_dequeue(list);
         return;
     }
 
@@ -177,22 +135,23 @@ void removeNode(List * list, Node * found)
         it = it->prev;
     }
 
+    l_cleanupNode(found);
     free(found);
     return;
 }
 
-void removeVal(List * list, int id)
+void l_removeVal(List * list, char * data)
 {
     if (list->size < 1)
         return;
 
     Node * found = NULL;
 
-    found = getByVal(list, id);
-    removeNode(list, found);
+    found = l_getByVal(list, data);
+    l_removeNode(list, found);
 }
 
-void removeAt(List * list, int i)
+void l_removeAt(List * list, int i)
 {
 
     if (
@@ -212,43 +171,15 @@ void removeAt(List * list, int i)
     else if (i == list->size - 1)
         found = list->top;
     else
-        found = getAt(list, i);
+        found = l_getAt(list, i);
 
-    removeNode(list, found);
+    l_removeNode(list, found);
 }
 
-void enqueue(List * list, int id)
-{
-    if (list == NULL)
-        return;
-    
-    Node * newNode = createNode();
-    newNode->i = 0;
-    newNode->id = id;
-
-    if (list->bottom == NULL || list->size < 1)
-    {
-        list->bottom = newNode;
-        list->top = newNode;
-    }
-    else 
-    {
-        list->bottom->next = newNode;
-        newNode->prev = list->bottom;
-        list->bottom = newNode;
-    }
-
-    Node * it = list->bottom->prev;
-
-    while (it != NULL)
-    {
-        it->i++;
-        it = it->prev;
-    }
-    list->size++;
-}
-
-int dequeue(List * list)
+/**
+ * removes from bottom/first position
+*/
+char * l_dequeue(List * list)
 {
     if (
         list == NULL || 
@@ -258,8 +189,11 @@ int dequeue(List * list)
         return NULL;
 
     Node * oldBottom = list->bottom;
-    int val = oldBottom->id;
+    char * val = (char *)malloc(strlen(oldBottom->data) * sizeof(char));
+    strcpy(val, oldBottom->data);
     list->bottom = oldBottom->prev;
+
+    l_cleanupNode(oldBottom);
 
     if (list->bottom != NULL)
         list->bottom->next = NULL;
@@ -279,7 +213,7 @@ int dequeue(List * list)
     return val;
 }
 
-List * newList()
+List * l_newList()
 {
     List * list = (List *)malloc(sizeof(List));
 
@@ -289,30 +223,60 @@ List * newList()
 
     return list;
 }
-
-void print(List * list)
+/**
+ * prints list
+ * t = top to bottom
+ * b = bottom to top
+*/
+void l_print(List * list, char dir)
 {
-    Node * it = list->top;
 
     printf("\nstack size: %d\n", list->size);
-
     printf("Printing all items: \n\n");
 
-    while (it != NULL && list->size > 0)
+    if (dir == 't')
     {
-        printf("(%d)\ti: %d", it->id, it->i);
-        if (it->prev != NULL)
-            printf("\t prev: (%d)\n", it->prev->id);
-        else
-            printf("\n");
-        it = it->next;
+        Node * it = list->top;
+
+        while (it != NULL && list->size > 0)
+        {
+            printf("(%i)\tdata: %s", it->i, it->data);
+            if (it->prev != NULL)
+                printf("\t prev: (%s)\n", it->prev->data);
+            else
+                printf("\n");
+            it = it->next;
+        }
+    } else 
+    {
+        Node * it = list->bottom;
+
+        while (it != NULL && list->size > 0)
+        {
+            printf("(%i)\tdata: %s", it->i, it->data);
+            if (it->prev != NULL)
+                printf("\t prev: (%s)\n", it->prev->data);
+            else
+                printf("\n");
+            it = it->prev;
+        }
     }
 
     printf("\n");
 
     if (list->top != NULL)
-        printf("top:\t(%d)\n", list->top->id);
+        printf("top:\t(%s)\n", list->top->data);
     
     if (list->bottom != NULL)
-        printf("bottom:\t(%d)\n\n", list->bottom->id);
+        printf("bottom:\t(%s)\n\n", list->bottom->data);
+}
+
+/**
+ * free memory from pointers 
+ * allocated and set them to NULL
+*/
+void l_cleanupNode(Node * n)
+{
+    free(n->data);
+    n->data = NULL;
 }
