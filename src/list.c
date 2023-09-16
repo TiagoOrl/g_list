@@ -237,7 +237,7 @@ void l_print(List * list, char dir)
     if (dir == 't')
     {
         Node * it = list->top;
-
+        printf("-top-\n");
         while (it != NULL && list->size > 0)
         {
             printf("(%i)\tdata: %s", it->i, it->data);
@@ -247,10 +247,12 @@ void l_print(List * list, char dir)
                 printf("\n");
             it = it->next;
         }
+        printf("-bottom-\n");
     } else 
     {
         Node * it = list->bottom;
 
+        printf("-bottom-\n");
         while (it != NULL && list->size > 0)
         {
             printf("(%i)\tdata: %s", it->i, it->data);
@@ -260,6 +262,7 @@ void l_print(List * list, char dir)
                 printf("\n");
             it = it->prev;
         }
+        printf("-top-\n");
     }
 
     printf("\n");
