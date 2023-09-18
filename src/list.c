@@ -34,6 +34,48 @@ void l_push(List * list, char * data)
     list->size++;
 }
 
+void l_insertAt(List * list, char * data, size_t i)
+{
+    if (
+        list ==  NULL ||
+        i >= list->size ||
+        i < 0
+    )
+        return;
+
+
+    if (list->size < 1)
+    {
+        l_push(list, data);
+        return;
+    }
+
+    Node * newNode = l_createNode(data);
+    Node * found = l_getAt(list, i);
+    Node * foundNext = found->next; // null?
+
+    found->next = newNode;
+    newNode->prev = found;
+    newNode->i = i;
+
+    newNode->next = foundNext;
+
+    if (foundNext != NULL)
+        foundNext->prev = newNode;
+    else 
+        list->bottom = newNode; // new bottom is newNode
+    
+
+    Node * it = newNode->prev;
+    while (it != NULL)
+    {
+        it->i++;
+        it = it->prev;
+    }
+    list->size++;
+    return;
+}
+
 char * l_pop(List * list)
 {
     if (list->top == NULL)
