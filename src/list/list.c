@@ -4,16 +4,15 @@
 node * l_create_node(unsigned char * data, size_t size)
 {
     node * item = (node* )malloc(sizeof(node));
-    size_t truesize = size + 1;
     item->next = NULL;
     item->prev = NULL;
-    item->data = calloc(truesize, sizeof(char));
-    item->size = truesize;
+    item->data = calloc(size + 1, sizeof(char));
+    item->size = size + 1;
     item->i = -1;
 
     strncpy(item->data, data, size);
 
-    item->data[truesize] = '\0';
+    item->data[item->size - 1] = '\0';
 
     return item;
 }
@@ -53,23 +52,23 @@ void l_insert_at(list *_list, unsigned char * data, int pos, size_t size)
         return;
     }
 
-    node * newNode = l_create_node(data, size);
+    node * new_node = l_create_node(data, size);
     node * found = l_get_at(*_list, pos);
     node * foundNext = found->next; // null?
 
-    found->next = newNode;
-    newNode->prev = found;
-    newNode->i = pos;
+    found->next = new_node;
+    new_node->prev = found;
+    new_node->i = pos;
 
-    newNode->next = foundNext;
+    new_node->next = foundNext;
 
     if (foundNext != NULL)
-        foundNext->prev = newNode;
+        foundNext->prev = new_node;
     else 
-        _list->bottom = newNode; // new bottom is newNode
+        _list->bottom = new_node; // new bottom is newNode
     
 
-    node * it = newNode->prev;
+    node * it = new_node->prev;
     while (it != NULL)
     {
         it->i++;
@@ -85,7 +84,7 @@ unsigned char * l_pop(list *list)
         return NULL;
     
     node * top_node = list->top;
-    unsigned char * val = (unsigned char *)calloc(strnlen(top_node->data, top_node->size), sizeof(char));
+    unsigned char * val = (unsigned char *)calloc(top_node->size, sizeof(char));
     
     strncpy(val, top_node->data, top_node->size);
     
@@ -236,7 +235,7 @@ unsigned char * l_dequeue(list* _list)
         return NULL;
 
     node * old_bottom = _list->bottom;
-    unsigned char * val = (unsigned char *)calloc(strnlen(old_bottom->data, old_bottom->size), sizeof(char));
+    unsigned char * val = (unsigned char *)calloc(old_bottom->size, sizeof(char));
     strncpy(val, old_bottom->data, old_bottom->size);
     _list->bottom = old_bottom->prev;
 
