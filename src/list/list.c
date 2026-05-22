@@ -10,7 +10,7 @@ node * l_create_node(unsigned char * data, size_t size)
     item->size = size + 1;
     item->i = -1;
 
-    strncpy(item->data, data, size);
+    memcpy(item->data, data, size);
 
     item->data[item->size - 1] = '\0';
 
@@ -54,18 +54,18 @@ void l_insert_at(list *_list, unsigned char * data, int pos, size_t size)
 
     node * new_node = l_create_node(data, size);
     node * found = l_get_at(*_list, pos);
-    node * foundNext = found->next; // null?
+    node * found_next = found->next; // null?
 
     found->next = new_node;
     new_node->prev = found;
     new_node->i = pos;
 
-    new_node->next = foundNext;
+    new_node->next = found_next;
 
-    if (foundNext != NULL)
-        foundNext->prev = new_node;
+    if (found_next != NULL)
+        found_next->prev = new_node;
     else 
-        _list->bottom = new_node; // new bottom is newNode
+        _list->bottom = new_node; // if next node after found is NULL, it means the new node is the BOTTOM node now
     
 
     node * it = new_node->prev;
@@ -86,7 +86,7 @@ unsigned char * l_pop(list *list)
     node * top_node = list->top;
     unsigned char * val = (unsigned char *)calloc(top_node->size, sizeof(char));
     
-    strncpy(val, top_node->data, top_node->size);
+    memcpy(val, top_node->data, top_node->size);
     
 
     list->top = list->top->next;
@@ -236,7 +236,7 @@ unsigned char * l_dequeue(list* _list)
 
     node * old_bottom = _list->bottom;
     unsigned char * val = (unsigned char *)calloc(old_bottom->size, sizeof(char));
-    strncpy(val, old_bottom->data, old_bottom->size);
+    memcpy(val, old_bottom->data, old_bottom->size);
     _list->bottom = old_bottom->prev;
 
     

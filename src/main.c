@@ -14,7 +14,22 @@ int main(int argc, char const *argv[])
 
     l_print(llist, 't');
 
+    l_insert_at(&llist, "INSERTED 4", 4, 11);
+    l_insert_at(&llist, "INSERTED 4", 4, 11);
+
+    l_push(&llist, "Alan", 4);
+    l_push(&llist, "Brock", 5);
+    l_push(&llist, "Jake", 4);
+    l_push(&llist, "Paul", 4);
+    l_push(&llist, "Karl W.", 7);
+
+
+    l_remove_at(&llist, 3);
+    l_remove_at(&llist, 3);
+    l_remove_at(&llist, 3);
+
     l_remove_at(&llist, 0);
+
 
     l_print(llist, 't');
 
