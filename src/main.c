@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
 
     l_print(llist, 't');
 
-    l_insert_at(&llist, "TWO 2", 3, 5);
+    l_remove_at(&llist, 0);
 
     l_print(llist, 't');
 
