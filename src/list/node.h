@@ -5,9 +5,10 @@ struct _node {
     struct _node * next;
     struct _node * prev;
     unsigned int i;
-    char * data;
+    unsigned int size;
+    unsigned char * data;
 };
 
-typedef struct _node Node;
+typedef struct _node node;
 
 #endif

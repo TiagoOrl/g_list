@@ -2,14 +2,14 @@ CC=gcc
 DEBUG=-g
 
 
-run: main.o list.o
-	$(CC) -o run main.o list.o $(DEBUG) && rm *.o && clear && ./run
+all: ./build/main.o ./build/list.o
+	$(CC) -o run ./build/main.o ./build/list.o $(DEBUG)
 
-main.o: main.c
-	$(CC) -c main.c $(DEBUG)
+./build/main.o: ./src/main.c
+	$(CC) -c ./src/main.c -o ./build/main.o  $(DEBUG)
 
-list.o: src/list.c
-	$(CC) -c src/list.c $(DEBUG)
+./build/list.o: ./src/list/list.c
+	$(CC) -c ./src/list/list.c -o ./build/list.o $(DEBUG)
 
 cl:
-	rm *.o run
+	rm ./build/*.o run

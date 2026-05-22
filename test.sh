@@ -1,0 +1,3 @@
+make cl
+make
+./run
