@@ -14,8 +14,8 @@ int main(int argc, char const *argv[])
 
     l_print(llist, 't');
 
-    l_insert_at(&llist, "INSERTED 4", 4, 11);
-    l_insert_at(&llist, "INSERTED 4", 4, 11);
+    l_insert_at(&llist, "INSERTED 4", 2, 11);
+    l_insert_at(&llist, "INSERTED 4", 2, 11);
 
     l_push(&llist, "Alan", 4);
     l_push(&llist, "Brock", 5);
@@ -33,6 +33,7 @@ int main(int argc, char const *argv[])
 
     l_print(llist, 't');
 
+    l_free_list(&llist);
 
     
     return 0;
