@@ -7,7 +7,6 @@ node * l_create_node(void * data, size_t size, int nbytes)
     item->data = calloc(size, nbytes);
     item->size = size;
     item->nbytes = nbytes;
-    item->i = -1;
 
     memcpy(item->data, data, size * nbytes);
 
@@ -17,8 +16,6 @@ node * l_create_node(void * data, size_t size, int nbytes)
 void l_push(list *_list, void * data, int nbytes, size_t size)
 {
     node * new_node = l_create_node(data, size, nbytes);
-
-    new_node->i = _list->size;
 
     if (_list->top == NULL || _list->size == 0)
     {
@@ -43,19 +40,22 @@ void l_insert_at(list *_list, void * data, int nbytes, int pos, size_t size)
         return;
 
 
-    if (_list->size < 1)
+    if (_list->size < 1 || pos == 0)
     {
         l_push(_list, data, nbytes, size);
         return;
     }
 
     node * new_node = l_create_node(data, size, nbytes);
-    node * found = l_get_at(*_list, pos);
+    node * found = l_get_at(*_list, pos - 1);
+
+    if (found == NULL)
+        return;
+    
     node * found_next = found->next; // null?
 
     found->next = new_node;
     new_node->prev = found;
-    new_node->i = pos;
 
     new_node->next = found_next;
 
@@ -66,11 +66,6 @@ void l_insert_at(list *_list, void * data, int nbytes, int pos, size_t size)
     
 
     node * it = new_node->prev;
-    while (it != NULL)
-    {
-        it->i++;
-        it = it->prev;
-    }
     _list->size++;
     return;
 }
@@ -108,11 +103,13 @@ node * l_get_at(list _list, int i)
 
     it = _list.top;
 
+    int j = 0;
     while (it != NULL)
     {
-        if (it->i == i)
+        if (j == i)
             return it;
         it = it->next;
+        j++;
     }
 
     return it;
@@ -174,11 +171,6 @@ void l_remove_node(list* list, node * found)
     upper_n->next = found->next;
     list->size--;
 
-    while (it != NULL)
-    {
-        it->i--;
-        it = it->prev;
-    }
 
     l_free_node(found);
     return;
@@ -246,11 +238,6 @@ void * l_dequeue(list* _list)
     _list->size--;
 
     node * it = _list->bottom;
-    while (it != NULL)
-    {
-        it->i--;
-        it = it->prev;
-    }
 
     l_free_node(old_bottom);
     return val;
@@ -273,7 +260,7 @@ list l_new()
 */
 void l_print(list list, char dir)
 {
-
+    int i = 0;
     printf("\nstack size: %d\n", list.size);
     printf("Printing all items: \n\n");
 
@@ -281,29 +268,33 @@ void l_print(list list, char dir)
     {
         node * it = list.top;
         printf("-top-\n");
+
         while (it != NULL && list.size > 0)
         {
-            printf("(%i)\tdata: %s", it->i, (const char*)it->data);
+            printf("(%i)\tdata: %s", i, (const char*)it->data);
             if (it->prev != NULL)
                 printf("\t prev: (%s)\n", (const char*)it->prev->data);
             else
                 printf("\n");
             it = it->next;
+            i++;
         }
         printf("-bottom-\n");
     } else 
+
     {
         node * it = list.bottom;
 
         printf("-bottom-\n");
         while (it != NULL && list.size > 0)
         {
-            printf("(%i)\tdata: %s", it->i, (const char*)it->data);
+            printf("(%i)\tdata: %s", i, (const char*)it->data);
             if (it->prev != NULL)
                 printf("\t prev: (%s)\n", (const char*)it->prev->data);
             else
                 printf("\n");
             it = it->prev;
+            i++;
         }
         printf("-top-\n");
     }

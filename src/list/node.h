@@ -4,7 +4,6 @@
 struct _node {
     struct _node * next;
     struct _node * prev;
-    unsigned int i;
     unsigned int size;
     unsigned int nbytes;
     void * data;
