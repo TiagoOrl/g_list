@@ -9,7 +9,7 @@ node * l_create_node(void * data, size_t size, int nbytes)
     item->nbytes = nbytes;
     item->i = -1;
 
-    memcpy(item->data, data, size);
+    memcpy(item->data, data, size * nbytes);
 
     return item;
 }
@@ -83,7 +83,7 @@ void * l_pop(list *list)
     node * top_node = list->top;
     void * val = (void *)calloc(top_node->size, top_node->nbytes);
     
-    memcpy(val, top_node->data, top_node->size);
+    memcpy(val, top_node->data, top_node->size * top_node->nbytes);
     
 
     list->top = list->top->next;
@@ -233,7 +233,7 @@ void * l_dequeue(list* _list)
 
     node * old_bottom = _list->bottom;
     void * val = calloc(old_bottom->size, old_bottom->nbytes);
-    memcpy(val, old_bottom->data, old_bottom->size);
+    memcpy(val, old_bottom->data, old_bottom->size * old_bottom->nbytes);
     _list->bottom = old_bottom->prev;
 
     
