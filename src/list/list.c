@@ -129,7 +129,7 @@ node * l_get_by_val(list _list, void * data)
 
     while (it != NULL)
     {
-        if (memcmp(it->data, data, it->size) == 0)
+        if (memcmp(it->data, data, it->size * it->nbytes) == 0)
             return it;
         it = it->next;
     }
