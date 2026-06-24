@@ -1,3 +1,3 @@
 make cl
 make
-./run
+./main

@@ -6,7 +6,8 @@ struct _node {
     struct _node * prev;
     unsigned int i;
     unsigned int size;
-    unsigned char * data;
+    unsigned int nbytes;
+    void * data;
 };
 
 typedef struct _node node;

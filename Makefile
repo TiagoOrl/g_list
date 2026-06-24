@@ -3,7 +3,7 @@ DEBUG=-g
 
 
 all: ./build/main.o ./build/list.o
-	$(CC) -o run ./build/main.o ./build/list.o $(DEBUG)
+	$(CC) -o main ./build/main.o ./build/list.o $(DEBUG)
 
 ./build/main.o: ./src/main.c
 	$(CC) -c ./src/main.c -o ./build/main.o  $(DEBUG)
@@ -12,4 +12,4 @@ all: ./build/main.o ./build/list.o
 	$(CC) -c ./src/list/list.c -o ./build/list.o $(DEBUG)
 
 cl:
-	rm ./build/*.o run
+	rm ./build/*.o run main
