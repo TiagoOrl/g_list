@@ -5,19 +5,43 @@ int main(int argc, char const *argv[])
 {
     list list = l_new();
 
-    l_push(&list, "Alan", sizeof(char), 5);
-    l_push(&list, "Brock", sizeof(char), 6);
-    l_push(&list, "Jake", sizeof(char), 5);
-    l_push(&list, "Paul", sizeof(char), 5);
-    l_push(&list, "Karl W.", sizeof(char), 8);
-    l_push(&list, "Zed", sizeof(char), 4);
+    struct _obj {
+        int id;
+        char name[50];
+    };
 
-    l_print(list, 't');
+    typedef struct _obj obj;
 
-    l_remove_at(&list, 2);
-    l_insert_at(&list, "JEFFF", sizeof(char), 0, 6);
+    obj obj1 = {
+        .id = 1,
+        .name = "tiago"
+    };
 
-    l_print(list, 't');
+    obj obj2 = {
+        .id = 2,
+        .name = "maria"
+    };
+
+    obj obj3 = {
+        .id = 3,
+        .name = "gabriela"
+    };
+
+    obj objs[45000];
+
+    l_push(&list, (void*)&obj1, sizeof(obj), sizeof(obj1));
+    l_push(&list, (void*)&obj2, sizeof(obj), sizeof(obj2));
+    l_push(&list, (void*)&obj3, sizeof(obj), sizeof(obj3));
+
+
+    node* it = list.top;
+    while (it != NULL)
+    {
+        obj *item = (obj*)it->data;
+        printf("id %i; name %s\n",item->id, item->name);
+        it = it->next;
+    }
+
 
     l_free_list(&list);
 

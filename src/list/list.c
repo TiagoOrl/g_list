@@ -202,9 +202,9 @@ void l_remove_at(list* list, int pos)
     node * found = NULL;
 
     if (pos == 0)
-        found = list->bottom;
-    else if (pos == list->size - 1)
         found = list->top;
+    else if (pos == list->size - 1)
+        found = list->bottom;
     else
         found = l_get_at(*list, pos);
 
